@@ -22,7 +22,7 @@ import SwiftUI
 public class SymLogV: SymLogC {
     private static var indent: Int = 0
 
-    public override init(_ symbol: Int = -1,              // init with 0 to disable logging for this class
+    public override init(_ symbol: Int = -1,            // init with 0 to disable logging for this class
                          funcName: String = #function,
                          filePath: String = #file,
                              line: UInt = #line) {

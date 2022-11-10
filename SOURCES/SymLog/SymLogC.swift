@@ -23,7 +23,7 @@ public class SymLogC {
     private static func className() -> String {"\(self)"}
     private static var loggedClasses: [String] = []     // names of classes using IDLogC
     private static var loggedInstances: [Int] = []      // how many instances of "name" have been allocated
-    public static var watchedInstance: Int = 0                 // set to # of instance you want to catch
+    public static var watchedInstance: Int = 0          // set to # of instance you want to catch
 
     // returns instance count and symbol#
     static func count(_ name: String)-> (Int, Int) {
@@ -40,7 +40,7 @@ public class SymLogC {
     }
     
     let name: String                                    // the class name of the logging object
-    var symbol: Int                                      // the symbol to use (1..80) or 0 to disable logging
+    var symbol: Int                                     // the symbol to use (1..80) or 0 to disable logging
     let instance: Int                                   // the instance number of this logging object
     public var catchDeinit: Bool = false                // set true to catch only deinit of instance
 
@@ -53,8 +53,7 @@ public class SymLogC {
         }
     }
 
-
-    public init(_ symbol: Int = -1,                       // init with 0 to disable logging for this class
+    public init(_ symbol: Int = -1,                     // init with 0 to disable logging for this class
                 funcName: String = #function,
                 filePath: String = #file,
                     line: UInt = #line) {
@@ -62,11 +61,11 @@ public class SymLogC {
         let (instance, index) = Self.count(name)
         self.instance = instance                        // incremented instance# from loggedInstances
         if symbol > 0 {
-            self.symbol = symbol                          // manual override
+            self.symbol = symbol                        // manual override
         } else if symbol < 0 {
-            self.symbol = index                          // automatic, use incremented index
+            self.symbol = index                         // automatic, use incremented index
         } else {
-            self.symbol = -index                         // 0 ==> no logging, but save negative index
+            self.symbol = -index                        // 0 ==> no logging, but save negative index
         }
 
         self.log("", funcName:"\(Self.className())()", filePath:filePath, line:line)
@@ -79,7 +78,7 @@ public class SymLogC {
         if self.instance == Self.watchedInstance {
             catchDeinit = true                          // set a breakpoint here to catch watched instance
         }
-        if self.symbol > 0 {                             // don't log if symbol <= 0
+        if self.symbol > 0 {                            // don't log if symbol <= 0
             let classFuncName = "\(self.name)#\(self.instance) \(funcName)"
             symLog(message, self.symbol, funcName: classFuncName, filePath: filePath, line: line)
         }
