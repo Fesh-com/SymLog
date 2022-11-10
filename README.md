@@ -29,11 +29,11 @@ or
 ```
 or
 ```swift
-	symLog.log(Any-Class)
+	symLog.log(Any_Class)
 ```
 or
 ```swift
-	symLog.log("your message with param \(Any-Class) and newlines \n\n")
+	symLog.log("your message with param \(Any_Class) and newlines \n\n")
 ```
   
 If you want to (temporarely) stop logging for this class, add a parameter "0" like this:
@@ -62,8 +62,8 @@ or
 			NavigationView {
 ```
   
-Since SymLogV inherits from SymLogC, you can use the class logging function also
-for debugging (Swift) logic in your (SwiftUI) view definitions. Just call  
+Since **SymLogV** inherits from **SymLogC**, you can use the class logging function also
+for debugging *Swift* logic in your *SwiftUI* view definitions. Just call  
 ```swift
 			symLog.log("your message here")
 ```
