@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018-2022 Marc Stibane
+//  Copyright © 2018-2023 Marc Stibane
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -47,7 +47,7 @@ public class SymLogC {
     deinit {
         if catchDeinit {
             catchDeinit = false                         // set a breakpoint here to catch deinit
-        }                                               //   then step out...
+        }                                               //   then step out to see where it got deleted
         if self.symbol > 0 {
             print("\(logSymbol(self.symbol-1)) [\(threadNum())] \(self.name)#\(self.instance) deinit()")
         }
@@ -57,7 +57,17 @@ public class SymLogC {
                 funcName: String = #function,
                 filePath: String = #file,
                     line: UInt = #line) {
-        self.name = funcName
+        if funcName.hasPrefix("init(") {                // funcName is botched
+            let fileName = fileToName(filePath)
+            if fileName.hasSuffix(".swift") {           // use filename without swift suffix instead
+                self.name = String(fileName.dropLast(6))
+            } else {
+                self.name = fileName                    // if not .swift
+            }
+        } else {
+            self.name = funcName                        // should be the class name
+        }
+
         let (instance, index) = Self.count(name)
         self.instance = instance                        // incremented instance# from loggedInstances
         if symbol > 0 {
@@ -75,12 +85,20 @@ public class SymLogC {
                      funcName: String = #function,
                      filePath: String = #file,
                          line: UInt = #line) {
-        if self.instance == Self.watchedInstance {
+        let _ = self.vlog(message, funcName: funcName, filePath: filePath, line: line)
+    }
+
+    public func vlog(_ message: Any = "",
+                      funcName: String = #function,
+                      filePath: String = #file,
+                          line: UInt = #line) -> Character {
+        if instance == Self.watchedInstance {
             catchDeinit = true                          // set a breakpoint here to catch watched instance
         }
-        if self.symbol > 0 {                            // don't log if symbol <= 0
-            let classFuncName = "\(self.name)#\(self.instance) \(funcName)"
-            symLog(message, self.symbol, funcName: classFuncName, filePath: filePath, line: line)
+        if symbol > 0 {                                 // don't log if symbol <= 0
+            let classFuncName = "\(name)#\(instance) \(funcName)"
+            return symLog(message, symbol, funcName: classFuncName, filePath: filePath, line: line)
         }
+        return logSymbol(symbol-1)
     }
 }

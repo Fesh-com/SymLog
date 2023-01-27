@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018-2022 Marc Stibane
+//  Copyright © 2018-2023 Marc Stibane
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -28,8 +28,8 @@ public func logSymbol(_ position: Int) -> Character {
     if position < 0 {
         return "❗️"
     } else {
-        let symbols = "⚪️🔴🔵⚫️🏈" + "🥎⚽️🏀⚾️🏐"      // 1..10
-                    + "🤍❤️💙🖤🤎" + "💛🧡💚💜💟"
+        let symbols = "⚪️🔴🔵⚫️🟢" + "🥎⚽️🏀⚾️🏐"      // 1..10
+                    + "🤍❤️💙🖤💚" + "💛🧡🤎💜💟"
                     + "♣️♠️♥️♦️💎" + "🍏🍎🍐🍊🍋"      // 21..30
                     + "☁️⛅️☀️🌙🌟" + "❄️🌑🌓🌕🌗"
                     + "👹😡👽😈😀" + "😭😎😇💪👍"      // 41..50
@@ -67,17 +67,24 @@ class Dater: DateFormatter {
     }
 }
 
+public func fileToName(_ filePath: String) -> String {
+    let fileName: NSString = NSString(string: filePath)
+    return fileName.lastPathComponent
+}
+
 /// nicely formatted logging
 public func symLog(_ message: Any = "",
                     _ symbol: Int = 80,                 // use 0 to disable logging
                     funcName: String = #function,
                     filePath: String = #file,
-                        line: UInt = #line) {
+                        line: UInt = #line) -> Character {
     if symbol > 0 {                                     // don't log if symbol <= 0
-        let fileName: NSString = NSString(string: filePath)
-        let fileLine = "\(fileName.lastPathComponent):\(line)"
+        let fileName = fileToName(filePath)
+        let fileLine = "\(fileName):\(line)"
         let symbol = logSymbol(symbol-1)
         let time = Dater.shared.string(from: Date())
         print("[\(threadNum())] \(time) \(symbol) \(fileLine)  \(funcName)  \(message)")
+        return symbol
     }
+    return logSymbol(symbol-1)
 }
