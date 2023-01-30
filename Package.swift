@@ -27,7 +27,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SymLog",
-            dependencies: []
+            path: "SOURCES/SymLog"
         ),
     ]
 )
