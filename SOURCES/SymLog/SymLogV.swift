@@ -30,7 +30,7 @@ public class SymLogV: SymLogC {
         if symbol > 0 {
             print(String(repeating: " ", count: Self.indent), terminator: "")
         }
-        super.init(symbol, appName: appName, funcName: funcName, filePath: filePath, line: line)
+        super.init(symbol, appName, funcName: funcName, filePath: filePath, line: line)
     }
     
     deinit {

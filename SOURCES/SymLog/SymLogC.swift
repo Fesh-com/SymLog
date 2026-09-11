@@ -54,7 +54,7 @@ public class SymLogC {
     }
 
     public init(_ symbol: Int = -1,                     // init with 0 to disable logging for this class
-                 appName: String? = nil,
+               _ appName: String? = nil,
                 funcName: String = #function,
                 filePath: String = #file,
                     line: UInt = #line) {
