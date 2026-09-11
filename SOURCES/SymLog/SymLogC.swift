@@ -106,7 +106,7 @@ public class SymLogC {
         }
         if symbol > 0 || isErr {                        // don't log if symbol <= 0
             let classFuncName = "\(name)#\(instance) \(funcName)"
-            return symLog(message, symbol, funcName: classFuncName, filePath: filePath, line: line)
+            return symLog(message, symbol, funcName: classFuncName, filePath: filePath, line: line, isErr: isErr)
         }
         return logSymbol(symbol-1)
     }

@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018-2023 Marc Stibane
+//  Copyright © 2018-2026 Marc Stibane
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -77,8 +77,9 @@ public func symLog(_ message: Any = "",
                     _ symbol: Int = 80,                 // use 0 to disable logging
                     funcName: String = #function,
                     filePath: String = #file,
-                        line: UInt = #line) -> Character {
-    if symbol > 0 {                                     // don't log if symbol <= 0
+                        line: UInt = #line,
+                       isErr: Bool = false) -> Character {
+    if symbol > 0 || isErr {                            // don't log if symbol <= 0
         let fileName = fileToName(filePath)
         let fileLine = "\(fileName):\(line)"
         let symbol = logSymbol(symbol-1)
