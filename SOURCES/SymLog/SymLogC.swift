@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018-2023 Marc Stibane
+//  Copyright © 2018-2026 Marc Stibane
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -54,6 +54,7 @@ public class SymLogC {
     }
 
     public init(_ symbol: Int = -1,                     // init with 0 to disable logging for this class
+                 appName: String? = nil,
                 funcName: String = #function,
                 filePath: String = #file,
                     line: UInt = #line) {
@@ -78,24 +79,32 @@ public class SymLogC {
             self.symbol = -index                        // 0 ==> no logging, but save negative index
         }
 
-        self.log("", funcName:"\(Self.className())()", filePath:filePath, line:line)
+        self.log(appName ?? "", funcName:"\(Self.className())()", filePath:filePath, line:line)
     }
     
     public func log(_ message: Any = "",
                      funcName: String = #function,
                      filePath: String = #file,
                          line: UInt = #line) {
-        let _ = self.vlog(message, funcName: funcName, filePath: filePath, line: line)
+        _ = self.vlog(message, funcName: funcName, filePath: filePath, line: line)
+    }
+
+    public func error(_ message: Any = "",
+                       funcName: String = #function,
+                       filePath: String = #file,
+                           line: UInt = #line) {
+        _ = self.vlog(message, funcName: funcName, filePath: filePath, line: line, isErr: true)
     }
 
     public func vlog(_ message: Any = "",
                       funcName: String = #function,
                       filePath: String = #file,
-                          line: UInt = #line) -> Character {
+                          line: UInt = #line,
+                         isErr: Bool = false) -> Character {
         if instance == Self.watchedInstance {
             catchDeinit = true                          // set a breakpoint here to catch watched instance
         }
-        if symbol > 0 {                                 // don't log if symbol <= 0
+        if symbol > 0 || isErr {                        // don't log if symbol <= 0
             let classFuncName = "\(name)#\(instance) \(funcName)"
             return symLog(message, symbol, funcName: classFuncName, filePath: filePath, line: line)
         }

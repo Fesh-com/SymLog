@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018-2023 Marc Stibane
+//  Copyright © 2018-2026 Marc Stibane
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,13 +23,14 @@ public class SymLogV: SymLogC {
     private static var indent: Int = 0
 
     public override init(_ symbol: Int = -1,            // init with 0 to disable logging for this class
+                        _ appName: String? = nil,
                          funcName: String = #function,
                          filePath: String = #file,
                              line: UInt = #line) {
         if symbol > 0 {
             print(String(repeating: " ", count: Self.indent), terminator: "")
         }
-        super.init(symbol, funcName: funcName, filePath: filePath, line: line)
+        super.init(symbol, appName: appName, funcName: funcName, filePath: filePath, line: line)
     }
     
     deinit {
